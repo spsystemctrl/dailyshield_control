@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DailyShield – Privacy Policy</title>
+<meta name="description" content="Privacy Policy for the DailyShield Android app by PSBM Labs.">
+<style>
+  :root{
+    --bg:#f6f8fb; --card:#ffffff; --text:#12202e; --muted:#4a5a6a;
+    --primary:#1BA84A; --accent:#1B3D6D; --border:#e2e8f0; --soft:#f0f5f1;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0e1621; --card:#152233; --text:#e8eef6; --muted:#a8b8c8;
+      --primary:#2ECC71; --accent:#5FA8FF; --border:#24374f; --soft:#18293c;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7; font-size:16px;
+  }
+  .wrap{max-width:820px; margin:0 auto; padding:28px 18px 64px}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:26px 22px}
+  h1{font-size:26px; line-height:1.3; margin:0 0 6px; font-weight:800}
+  h2{font-size:18px; margin:26px 0 8px; color:var(--primary); font-weight:700}
+  p{margin:0 0 12px; color:var(--muted)}
+  li{margin:0 0 8px; color:var(--muted)}
+  ul{padding-left:20px; margin:0 0 12px}
+  strong{color:var(--text); font-weight:600}
+  em{color:var(--muted); font-size:13px}
+  a{color:var(--accent); text-decoration:underline; word-break:break-word}
+  .badge{display:inline-block; background:var(--soft); border:1px solid var(--border);
+         color:var(--muted); font-size:12.5px; padding:4px 10px; border-radius:999px; margin-bottom:10px}
+  .note{background:var(--soft); border-left:4px solid var(--primary); border-radius:10px; padding:12px 14px; margin:0 0 14px}
+  .note p{margin:0}
+  footer{text-align:center; color:var(--muted); font-size:13px; margin-top:22px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+
+<h1>DailyShield – Privacy Policy</h1>
+<p><em>Last updated: September 21, 2026</em></p>
+
+<h2>1. Introduction</h2>
+<p>DailyShield ("we", "our", or "the app") is developed by PSBM Labs. We built DailyShield as an offline-first privacy and productivity toolkit, and we designed it so that your personal data stays on your own device. This Privacy Policy explains what the app accesses, what it stores, what it never collects, and the choices available to you. By installing or using DailyShield, you agree to the practices described here.</p>
+
+<h2>2. Our Core Privacy Principle</h2>
+<div class="note">
+<p>DailyShield does not require an account, a login, or a sign-up. We do not operate a server that stores your personal content. Every item you create inside the app — receipts, expenses, notes, password reminders and auto-silent zones — is saved only in the app's private local storage (Hive database) on your device. We cannot see it, and it is never uploaded to us.</p>
+</div>
+
+<h2>3. Information Processed by Each Module</h2>
+<ul>
+  <li><strong>Receipt Scanner</strong> – You choose a photo from your camera or gallery. Text is extracted using Google ML Kit Text Recognition, which runs fully on-device. A copy of the selected image is stored inside the app's private folder and the extracted text, merchant name, amount, date and category are saved locally. No receipt image or receipt text is uploaded to any server.</li>
+  <li><strong>Expense Tracker</strong> – All expense records, totals and categories stay in the local database on your device.</li>
+  <li><strong>App Permission Audit</strong> – The app reads the list of applications installed on your device and the permissions they declare, only to display a privacy report to you on screen. This list is generated in real time, is not stored, and is never transmitted anywhere.</li>
+  <li><strong>Password Expiry Tracker</strong> – This module is a rotation reminder tool. It stores only a label (for example "Email" or "Bank"), a category, an optional note and the date you last changed that password. <strong>DailyShield never asks for, stores, or transmits your actual passwords.</strong></li>
+  <li><strong>Location Based Auto Silent</strong> – When you create a silent zone, the coordinates and radius you select are saved on your device and registered with the Android geofencing service so your phone can switch to silent mode when you enter that area. Your location is used only on your device to trigger this ringer change. We do not log, track, store on a server, or share your location history with anyone.</li>
+  <li><strong>Notebook</strong> – Notes you write are stored locally on your device only.</li>
+</ul>
+
+<h2>4. Permissions We Request and Why</h2>
+<ul>
+  <li><strong>Camera</strong> – to capture a receipt photo for scanning.</li>
+  <li><strong>Photos / Storage</strong> – to let you pick an existing receipt image and to save the cropped copy inside the app's own folder.</li>
+  <li><strong>Location (approximate, precise and background)</strong> – required for the Auto Silent feature. Background location is needed so the geofence can still switch your phone to silent when the app is closed or not in use. This permission is optional; if you do not use Auto Silent, you can deny it and the rest of the app will continue to work.</li>
+  <li><strong>Do Not Disturb access (Notification Policy)</strong> – to change your ringer mode to silent and restore it when you leave the zone.</li>
+  <li><strong>Notifications</strong> – to show the foreground service and status notifications required by Android for geofencing.</li>
+  <li><strong>Run at startup and Wake lock</strong> – so your saved silent zones keep working after the device restarts.</li>
+  <li><strong>Internet and Network state</strong> – to load advertisements, check connectivity and send a message if you use the Contact Us form.</li>
+</ul>
+<p>We do not access your contacts, SMS messages, call logs, or microphone.</p>
+
+<h2>5. Contact Form</h2>
+<p>If you voluntarily use the Contact Us screen, the name, email address, subject and message you type are sent through the EmailJS delivery service so that our support team can reply to you. This information is used only to answer your query and is not used for marketing or sold to anyone. If you prefer not to share these details, simply do not use the form and email us directly instead.</p>
+
+<h2>6. Advertising and Third-Party Services</h2>
+<p>DailyShield is free and is supported by advertisements served through Google AdMob. To show ads, Google may automatically collect:</p>
+<ul>
+  <li>Advertising ID (a resettable device identifier)</li>
+  <li>Device information such as model, operating system version, language and general region</li>
+  <li>Ad interaction data such as impressions and clicks</li>
+</ul>
+<p>This data is collected by Google, not by us, and is governed by Google's own privacy practices: <a href="https://policies.google.com/privacy">policies.google.com/privacy</a></p>
+<p>You can review or withdraw your ad personalization consent at any time using the "Manage Ad Privacy Choices" button on this screen.</p>
+<p>The app also uses Google Play In-App Review to optionally ask for a rating, and Google Fonts to load typefaces.</p>
+
+<h2>7. Your Consent Choices (GDPR / UK)</h2>
+<p>If you are located in the European Economic Area, the United Kingdom or Switzerland, a consent form is shown when you first open the app, in line with GDPR and UK data protection requirements. Your choice can be changed at any time from this screen.</p>
+
+<h2>8. Data Retention and Deletion</h2>
+<p>Because your content is stored only on your device, you remain in full control of it. You may delete any individual receipt, expense, note, password reminder or silent zone from inside the app. Uninstalling DailyShield removes the entire local database and all saved receipt images from your device permanently. We hold no backup copy, so deleted data cannot be recovered by us or by you.</p>
+
+<h2>9. Children's Privacy</h2>
+<p>DailyShield is not directed at children under 13 (or the minimum age applicable in your country) and we do not knowingly collect personal information from children. If you believe a child has provided us information through the contact form, please write to us and we will delete it.</p>
+
+<h2>10. Data Security</h2>
+<p>Your records are kept in the app's private storage area, which other applications cannot read on a non-rooted device. We apply reasonable technical measures to protect any data passing through the app. However, no method of electronic storage or internet transmission is completely secure, and we recommend keeping a screen lock enabled on your device.</p>
+
+<h2>11. Your Rights</h2>
+<p>Depending on where you live, you may have the right to access, correct, delete or restrict processing of personal data held about you. Since DailyShield does not store your personal data on any server, these rights are exercised directly on your device. For data collected by our advertising partner, please use the Google link in Section 6.</p>
+<p>If you are a California resident, you may have additional rights under the California Consumer Privacy Act (CCPA), including the right to know what personal information is collected and the right to opt out of its sale or sharing for advertising purposes. DailyShield does not sell or share personal data; such requests should be directed to Google using the link in Section 6.</p>
+
+<h2>12. Changes to This Policy</h2>
+<p>We may update this Privacy Policy as the app evolves. Any change will be published on this page with a new "Last updated" date. Continued use of the app after an update means you accept the revised policy.</p>
+
+<h2>13. Contact Us</h2>
+<div class="note">
+<p>If you have any question about this Privacy Policy or about how DailyShield handles your data, contact us at:<br><strong>psbmlabs@gmail.com</strong></p>
+</div>
+
+</div>
+<footer>© 2026 PSBM Labs · DailyShield</footer>
+</div>
+</body>
+</html>
