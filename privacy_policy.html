@@ -47,14 +47,14 @@
 <div class="card">
 
 <h1>DailyShield – Privacy Policy</h1>
-<p><em>Last updated: September 22, 2026</em></p>
+<p><em>Last updated: October 5, 2026</em></p>
 
 <h2>1. Introduction</h2>
-<p>DailyShield ("we", "our", or "the app") is developed by PSBM Labs. We built DailyShield as an offline-first privacy and productivity toolkit, and we designed it so that your personal data stays on your own device. This Privacy Policy explains what the app accesses, what it stores, what it never collects, and the choices available to you. By installing or using DailyShield, you agree to the practices described here.</p>
+<p>DailyShield ("we", "our", or "the app") is developed by PSBM Labs. We built DailyShield as an offline-first privacy, safety and productivity toolkit, and we designed it so that your personal data stays on your own device. This Privacy Policy explains what the app accesses, what it stores, what it never collects, and the choices available to you. By installing or using DailyShield, you agree to the practices described here.</p>
 
 <h2>2. Our Core Privacy Principle</h2>
 <div class="note">
-<p>DailyShield does not require an account, a login, or a sign-up. We do not operate a server that stores your personal content. Every item you create inside the app — receipts, expenses, notes, password reminders, water reminder settings and auto-silent zones — is saved only in the app's private local storage (Hive database) on your device. We cannot see it, and it is never uploaded to us.</p>
+<p>DailyShield does not require an account, a login, or a sign-up. We do not operate a server that stores your personal content. Every item you create inside the app — receipts, expenses, notes, password reminders, water, medicine and prayer reminders, emergency contacts, vault files, intruder photos, fake call settings and auto-silent zones — is saved only in the app's private local storage (a Hive database and encrypted files) on your device. We cannot see it, and it is never uploaded to us.</p>
 </div>
 
 <h2>3. Information Processed by Each Module</h2>
@@ -64,27 +64,37 @@
   <li><strong>App Permission Audit</strong> – The app reads the list of applications installed on your device and the permissions they declare, only to display a privacy report to you on screen. This list is generated in real time, is not stored, and is never transmitted anywhere.</li>
   <li><strong>Password Expiry Tracker</strong> – This module is a rotation reminder tool. It stores only a label (for example "Email" or "Bank"), a category, an optional note and the date you last changed that password. <strong>DailyShield never asks for, stores, or transmits your actual passwords.</strong></li>
   <li><strong>Water Reminder</strong> – This module helps you stay hydrated by sending periodic notifications during your chosen active window. Your reminder settings (start time, end time, interval, daily goal and glass size) are saved locally on your device only. The app logs only the number of glasses you log each day; no personal health or medical data is collected, processed or shared. Reminders use on-device scheduling — no location or personal data is sent to any server.</li>
+  <li><strong>Medicine Reminder</strong> – This module stores the medicine name, dosage, an optional purpose note, your reminder times and a record of the doses you mark as taken. This information is saved only on your device, is used only to schedule on-device notifications and to show your own history, and is never uploaded, shared or sold. We do not collect or analyse health information.</li>
+  <li><strong>Prayer Reminder</strong> – This module stores the religion or tradition you choose in the app, the prayer name, the reminder time and duration you set, and an optional place label that you type yourself (for example "Home"). Prayer times are not calculated or fetched from any server, they are the times you enter, and no GPS location is used by this module. Everything stays on your device.</li>
+  <li><strong>Emergency Contacts</strong> – You can save up to five contacts (name, phone number and relationship) on your device. When you tap Call, SMS or WhatsApp, the app opens your phone dialer or the selected app with a pre-filled help message; DailyShield does not place calls or send messages by itself. When you tap Share My Location, the app reads your current precise location once, builds a Google Maps link and hands it to the sharing app you choose. That location is not sent to our servers, is not stored by us and is never tracked in the background. To show the right emergency numbers for your country, the app may use your device language and region or, if you allow location access, your approximate position to work out your country. This lookup uses Android's built-in geocoding service, which may be provided by Google Play services, and we do not receive the result. A rewarded ad may be shown before you share your location.</li>
+  <li><strong>Shield Guard – Link Scanner</strong> – A link you type or paste is analysed on your device with built-in rules (for example look-alike names, suspicious extensions or shortened links). The app does not send the link to us or to any third party for this check.</li>
+  <li><strong>Shield Guard – Secure Vault</strong> – Photos, videos, documents and notes that you add are encrypted on your device with AES-GCM encryption and kept in the app's private folder. The encryption key is held in your device's secure storage and your vault PIN is stored only as a salted hash. Optional fingerprint or face unlock is handled entirely by the Android system biometric prompt; DailyShield never receives or stores your biometric data. Vault content leaves your device only if you choose to export or share it.</li>
+  <li><strong>Shield Guard – Fake Call and Fake Alarm</strong> – The caller name and number you type are saved on your device. When you start a fake call or alarm, the app schedules a local alarm and notification with the Android alarm service and plays your phone's own ringtone or alarm sound. No real call or SMS is made and nothing is sent to a server.</li>
+  <li><strong>Shield Guard – Intruder Alert</strong> – This is optional and off by default. If you turn it on, after the number of wrong PIN attempts that you choose, the front camera takes one photo; no audio or video is recorded. The photo is encrypted and stored in the app's private folder together with the time and attempt count, and it can be viewed only inside the app after you unlock it. It is never uploaded. You can switch the feature off or delete the photos at any time.</li>
   <li><strong>Location Based Auto Silent</strong> – When you create a silent zone, the coordinates and radius you select are saved on your device and registered with the Android geofencing service so your phone can switch to silent mode when you enter that area. Your location is used only on your device to trigger this ringer change. We do not log, track, store on a server, or share your location history with anyone.</li>
   <li><strong>Notebook</strong> – Notes you write are stored locally on your device only.</li>
 </ul>
 
 <h2>4. Permissions We Request and Why</h2>
 <ul>
-  <li><strong>Camera</strong> – to capture a receipt photo for scanning.</li>
-  <li><strong>Photos / Storage</strong> – to let you pick an existing receipt image and to save the cropped copy inside the app's own folder.</li>
-  <li><strong>Location (approximate, precise and background)</strong> – required for the Auto Silent feature. Background location is needed so the geofence can still switch your phone to silent when the app is closed or not in use. This permission is optional; if you do not use Auto Silent, you can deny it and the rest of the app will continue to work.</li>
-  <li><strong>Do Not Disturb access (Notification Policy)</strong> – to change your ringer mode to silent and restore it when you leave the zone, and to send water reminder notifications.</li>
-  <li><strong>Notifications</strong> – to show foreground service notifications required by Android for geofencing and to send water reminder notifications on schedule.</li>
-  <li><strong>Run at startup and Wake lock</strong> – so your saved silent zones and water reminder schedule keep working after the device restarts.</li>
+  <li><strong>Camera</strong> – to capture a receipt photo for scanning and, only if you turn on Intruder Alert, to take a front-camera photo after wrong PIN attempts.</li>
+  <li><strong>Photos / Storage</strong> – to let you pick an existing receipt image or vault file and to save copies inside the app's own folder.</li>
+  <li><strong>Location (approximate, precise and background)</strong> – Precise or approximate location is used for the Auto Silent feature and, once and only when you tap, to share your location or detect your country in Emergency Contacts. Background location is needed only for Auto Silent, so the geofence can still switch your phone to silent when the app is closed or not in use. All location permissions are optional; if you do not use these features you can deny them and the rest of the app will continue to work.</li>
+  <li><strong>Do Not Disturb access (Notification Policy)</strong> – to change your ringer mode to silent and restore it when you leave an Auto Silent zone.</li>
+  <li><strong>Notifications</strong> – to show the foreground service notification required by Android for geofencing and to deliver water, medicine and prayer reminders and fake call or alarm alerts.</li>
+  <li><strong>Alarms and reminders (exact alarms)</strong> – so reminders and fake calls or alarms are delivered at the time you choose.</li>
+  <li><strong>Battery optimisation exemption</strong> – optional; it helps Android deliver reminders on time when the app is closed.</li>
+  <li><strong>Biometric</strong> – optional fingerprint or face unlock for the Secure Vault, handled by the Android system.</li>
+  <li><strong>Run at startup, Wake lock and Vibrate</strong> – so your saved silent zones and reminder schedules keep working after the device restarts and so reminders can wake the device and vibrate.</li>
   <li><strong>Internet and Network state</strong> – to load advertisements, check connectivity and send a message if you use the Contact Us form.</li>
 </ul>
-<p>We do not access your contacts, SMS messages, call logs, or microphone.</p>
+<p>We do not access your phone contacts, SMS messages, call logs, or microphone. DailyShield does not request permission to place calls or send SMS directly; calls and messages go through your own dialer and messaging apps only after you tap.</p>
 
 <h2>5. Contact Form</h2>
 <p>If you voluntarily use the Contact Us screen, the name, email address, subject and message you type are sent through the EmailJS delivery service so that our support team can reply to you. This information is used only to answer your query and is not used for marketing or sold to anyone. If you prefer not to share these details, simply do not use the form and email us directly instead.</p>
 
 <h2>6. Advertising and Third-Party Services</h2>
-<p>DailyShield is free and is supported by advertisements served through Google AdMob. To show ads, Google may automatically collect:</p>
+<p>DailyShield is free and is supported by advertisements served through Google AdMob, including banner, interstitial, app-open and rewarded formats. A rewarded ad may be shown before some actions, such as opening certain modules or sharing your location. To show ads, Google may automatically collect:</p>
 <ul>
   <li>Advertising ID (a resettable device identifier)</li>
   <li>Device information such as model, operating system version, language and general region</li>
@@ -98,22 +108,25 @@
 <p>If you are located in the European Economic Area, the United Kingdom or Switzerland, a consent form is shown when you first open the app, in line with GDPR and UK data protection requirements. Your choice can be changed at any time from this screen.</p>
 
 <h2>8. Data Retention and Deletion</h2>
-<p>Because your content is stored only on your device, you remain in full control of it. You may delete any individual receipt, expense, note, password reminder, water reminder log or silent zone from inside the app. Uninstalling DailyShield removes the entire local database and all saved receipt images from your device permanently. We hold no backup copy, so deleted data cannot be recovered by us or by you.</p>
+<p>Because your content is stored only on your device, you remain in full control of it. You may delete any individual receipt, expense, note, password reminder, water or medicine reminder log, prayer reminder, emergency contact, vault item, intruder photo or silent zone from inside the app. Uninstalling DailyShield removes the entire local database, all saved images, all encrypted vault files and the vault key from your device permanently. We hold no backup copy, so deleted data cannot be recovered by us or by you.</p>
 
 <h2>9. Children's Privacy</h2>
 <p>DailyShield is not directed at children under 13 (or the minimum age applicable in your country) and we do not knowingly collect personal information from children. If you believe a child has provided us information through the contact form, please write to us and we will delete it.</p>
 
 <h2>10. Data Security</h2>
-<p>Your records are kept in the app's private storage area, which other applications cannot read on a non-rooted device. We apply reasonable technical measures to protect any data passing through the app. However, no method of electronic storage or internet transmission is completely secure, and we recommend keeping a screen lock enabled on your device.</p>
+<p>Your records are kept in the app's private storage area, which other applications cannot read on a non-rooted device. Vault files and intruder photos are additionally encrypted, and the vault PIN is stored only as a salted hash. We apply reasonable technical measures to protect any data passing through the app. However, no method of electronic storage or internet transmission is completely secure, and we recommend keeping a screen lock enabled on your device.</p>
 
 <h2>11. Your Rights</h2>
 <p>Depending on where you live, you may have the right to access, correct, delete or restrict processing of personal data held about you. Since DailyShield does not store your personal data on any server, these rights are exercised directly on your device. For data collected by our advertising partner, please use the Google link in Section 6.</p>
 <p>If you are a California resident, you may have additional rights under the California Consumer Privacy Act (CCPA), including the right to know what personal information is collected and the right to opt out of its sale or sharing for advertising purposes. DailyShield does not sell or share personal data; such requests should be directed to Google using the link in Section 6.</p>
 
-<h2>12. Changes to This Policy</h2>
+<h2>12. Health, Religious and Other Sensitive Information</h2>
+<p>Medicine Reminder and Prayer Reminder may involve health or religious information that you choose to enter, and the Secure Vault and Intruder Alert may hold private files and photos. This information stays on your device. We do not collect, transfer, share or sell it, and we do not use it for advertising or profiling. Please enter only what you are comfortable keeping on your device.</p>
+
+<h2>13. Changes to This Policy</h2>
 <p>We may update this Privacy Policy as the app evolves. Any change will be published on this page with a new "Last updated" date. Continued use of the app after an update means you accept the revised policy.</p>
 
-<h2>13. Contact Us</h2>
+<h2>14. Contact Us</h2>
 <div class="note">
 <p>If you have any question about this Privacy Policy or about how DailyShield handles your data, contact us at:<br><strong>psbmlabs@gmail.com</strong></p>
 </div>
