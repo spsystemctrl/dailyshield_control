@@ -37,6 +37,8 @@
   strong{color:var(--text); font-weight:600}
   em{color:var(--muted); font-size:13px}
   a{color:var(--accent); text-decoration:underline; word-break:break-word}
+  .badge{display:inline-block; background:var(--soft); border:1px solid var(--border);
+         color:var(--muted); font-size:12.5px; padding:4px 10px; border-radius:999px; margin-bottom:10px}
   .note{background:var(--soft); border-left:4px solid var(--primary); border-radius:10px; padding:12px 14px; margin:0 0 14px}
   .warn{background:var(--warnbg); border-left:4px solid var(--warnline); border-radius:10px; padding:12px 14px; margin:0 0 14px}
   .note p,.warn p{margin:0}
@@ -48,13 +50,13 @@
 <div class="card">
 
 <h1>DailyShield – Terms &amp; Conditions</h1>
-<p><em>Last updated: September 22, 2026</em></p>
+<p><em>Last updated: October 5, 2026</em></p>
 
 <h2>1. Acceptance of Terms</h2>
 <p>By downloading, installing or using DailyShield ("the app"), you agree to be bound by these Terms and Conditions. If you do not agree with any part of them, please stop using the app and uninstall it.</p>
 
 <h2>2. Description of Service</h2>
-<p>DailyShield is a free offline-first privacy and productivity toolkit published by PSBM Labs. It includes a Receipt Scanner with on-device text recognition, an Expense Tracker, an App Permission Audit report, a Password Expiry Tracker, a Water Reminder system, a Location Based Auto Silent feature and a Notebook. All of your content is processed and stored locally on your device.</p>
+<p>DailyShield is a free offline-first privacy, safety and productivity toolkit published by PSBM Labs. It includes a Receipt Scanner with on-device text recognition, an Expense Tracker, an App Permission Audit report, a Password Expiry Tracker, a Water Reminder, a Medicine Reminder, a Prayer Reminder, Emergency Contacts, Shield Guard (Link Scanner, Secure Vault, Fake Call and Alarm, and Intruder Alert), a Location Based Auto Silent feature and a Notebook. All of your content is processed and stored locally on your device.</p>
 
 <h2>3. License to Use</h2>
 <div class="note">
@@ -65,8 +67,9 @@
 <ul>
   <li>You agree not to reverse-engineer, decompile, modify or redistribute the app.</li>
   <li>You agree not to use the app for any unlawful purpose or in violation of Google Play policies.</li>
-  <li>You are responsible for the accuracy of the information you enter, including expense amounts, notes and reminder dates.</li>
+  <li>You are responsible for the accuracy of the information you enter, including expense amounts, notes, medicine details, contact numbers and reminder times.</li>
   <li>You are responsible for keeping your own device secure, since all app data is stored on it.</li>
+  <li>You are responsible for allowing the notification, alarm and battery permissions that reminders and fake calls need to work on your device.</li>
 </ul>
 
 <h2>5. Receipt Scanning Accuracy</h2>
@@ -82,44 +85,67 @@
 <p><strong>Health Reminder, Not Medical Advice:</strong> The Water Reminder feature is a convenience tool to help you remember to drink water during your chosen active window. It is not a substitute for medical advice. DailyShield is not affiliated with any health or wellness organization, does not provide medical guidance, and makes no claims about the health benefits of water consumption. You are solely responsible for deciding whether to follow any reminder, and you should consult a doctor if you have concerns about your hydration or health. Your hydration log is stored on your device only and is never used for medical or insurance purposes.</p>
 </div>
 
-<h2>8. Location Based Auto Silent</h2>
-<p>The Auto Silent feature depends on Android geofencing, background location access, Do Not Disturb permission and your device's own power-saving behaviour. Manufacturer battery optimisation, restricted background activity, disabled location services or an OS update may delay or prevent a zone from triggering. You accept that the feature may not work in every situation and that you remain responsible for silencing your phone where required, for example in meetings, examinations, hospitals or places of worship. We are not liable for any consequence of a missed or unexpected ringer change.</p>
-
-<h2>9. App Permission Audit</h2>
-<p>The audit report shows the permissions that other installed applications declare on your device. It is provided for informational awareness only. A high access score does not mean an application is malicious, and a low score does not mean it is safe. DailyShield does not modify, block or revoke the permissions of other applications, and it is not antivirus or malware-removal software.</p>
-
-<h2>10. Data Storage and Loss</h2>
+<h2>8. Medicine Reminder</h2>
 <div class="warn">
-<p>All of your data is stored locally on your device and is not backed up to our servers. Uninstalling the app, clearing app storage, resetting your device or a device failure will permanently delete your data, including your water reminder logs, hydration history, expense records and notes. PSBM Labs cannot restore lost data and is not liable for any such loss.</p>
+<p><strong>Reminder Tool, Not Medical Advice:</strong> The Medicine Reminder only notifies you at the times that you set. It has no medicine database, does not check doses or drug interactions, and does not give medical, dosing or treatment guidance. Always follow the instructions of your doctor or pharmacist. Reminders can be late, silent or missed because of battery optimisation, silent or Do Not Disturb mode, revoked permissions, a switched-off device or operating system restrictions, so do not rely on the app as the only way to remember critical medication. We are not responsible for any health consequence of a missed, late or incorrect reminder. In a medical emergency, contact your local emergency services immediately.</p>
 </div>
 
-<h2>11. Advertisements</h2>
-<p>DailyShield displays advertisements served through Google AdMob, including banner, interstitial and rewarded formats, to keep the app free. Some modules may require watching a rewarded ad before they open. Ad behaviour and the data collected by AdMob are described in our <strong>Privacy Policy</strong>. By using the app you consent to seeing ads, subject to your consent choices under GDPR and UK rules where applicable.</p>
+<h2>9. Prayer Reminder</h2>
+<p>The Prayer Reminder notifies you at the times and for the duration that you set. It does not calculate prayer times, determine direction, or give religious rulings or advice. Please confirm prayer times with your local religious authority or a source you trust. Reminders may be delayed or not shown because of device settings or operating system restrictions, and we are not liable for any missed reminder.</p>
 
-<h2>12. Third-Party Services</h2>
-<p>The app relies on third-party services including Google AdMob, Google ML Kit, Google Play Services, Google Play In-App Review, Google Fonts, the EmailJS delivery service for the Contact Us form, and Google's notification and alarm services for Water Reminder background scheduling. Their availability and behaviour are outside our control, and their own terms apply to the parts of the service they provide.</p>
+<h2>10. Emergency Contacts</h2>
+<div class="warn">
+<p>Emergency Contacts is a convenience shortcut and is not a replacement for official emergency services. The app does not contact emergency services or your saved contacts automatically; calls and messages happen only after you tap and go through your own dialer, messaging app or WhatsApp. Emergency numbers shown for a country are for general reference and may be outdated or incomplete, so please verify them yourself. Delivery of messages and location links depends on your network, your device and the apps you choose, and the accuracy of a shared location is not guaranteed. You decide who receives your location and you are responsible for sharing it only with people you trust. We are not liable for any failed, delayed or misused call, message or location share, or for any outcome arising from them.</p>
+</div>
 
-<h2>13. Intellectual Property</h2>
+<h2>11. Shield Guard</h2>
+<div class="warn">
+<ul>
+  <li><strong>Link Scanner</strong> – The scanner uses built-in rules to give a risk score and is guidance only. It is not antivirus software, it can miss dangerous links and can flag safe ones, and you remain responsible for deciding whether to open a link.</li>
+  <li><strong>Secure Vault</strong> – Vault files are encrypted on your device, but no security measure is absolute. If you forget your PIN, clear the app's data, uninstall the app, reset or lose your device, your vault content may be permanently lost, and we cannot recover it or reset your PIN. Keep separate copies of important files. Do not store unlawful content in the vault.</li>
+  <li><strong>Fake Call and Fake Alarm</strong> – These are simulated screens that help you politely leave an uncomfortable situation. No real call is made. You agree not to use them to deceive others in a harmful way, harass or impersonate anyone, commit fraud, cheat in examinations, or interfere with real emergency services. A fake call may not appear on time if notifications, alarms or battery permissions are restricted on your device, and we are not liable for a missed or late fake call.</li>
+  <li><strong>Intruder Alert</strong> – This optional feature photographs whoever is in front of the camera after wrong PIN attempts. Use it only on a device that you own or are authorised to use, and make sure that your use follows the laws of your country about photographing people. You are responsible for how you use the photos.</li>
+</ul>
+</div>
+
+<h2>12. Location Based Auto Silent</h2>
+<p>The Auto Silent feature depends on Android geofencing, background location access, Do Not Disturb permission and your device's own power-saving behaviour. Manufacturer battery optimisation, restricted background activity, disabled location services or an OS update may delay or prevent a zone from triggering. You accept that the feature may not work in every situation and that you remain responsible for silencing your phone where required, for example in meetings, examinations, hospitals or places of worship. We are not liable for any consequence of a missed or unexpected ringer change.</p>
+
+<h2>13. App Permission Audit</h2>
+<p>The audit report shows the permissions that other installed applications declare on your device. It is provided for informational awareness only. A high access score does not mean an application is malicious, and a low score does not mean it is safe. DailyShield does not modify, block or revoke the permissions of other applications, and it is not antivirus or malware-removal software.</p>
+
+<h2>14. Data Storage and Loss</h2>
+<div class="warn">
+<p>All of your data is stored locally on your device and is not backed up to our servers. Uninstalling the app, clearing app storage, resetting your device or a device failure will permanently delete your data, including your water and medicine reminder logs, prayer reminders, emergency contacts, vault files, intruder photos, expense records and notes. PSBM Labs cannot restore lost data and is not liable for any such loss.</p>
+</div>
+
+<h2>15. Advertisements</h2>
+<p>DailyShield displays advertisements served through Google AdMob, including banner, interstitial, app-open and rewarded formats, to keep the app free. Some modules or actions may require watching a rewarded ad before they open or run, for example sharing your location. Ad behaviour and the data collected by AdMob are described in our <strong>Privacy Policy</strong>. By using the app you consent to seeing ads, subject to your consent choices under GDPR and UK rules where applicable.</p>
+
+<h2>16. Third-Party Services</h2>
+<p>The app relies on third-party services including Google AdMob, Google ML Kit, Google Play Services, Google Play In-App Review, Google Fonts, the EmailJS delivery service for the Contact Us form, the Android biometric and geocoding services, and Google's notification and alarm services for reminder scheduling. Links you share may open in Google Maps, and messages may go through WhatsApp or your SMS app if you choose them. Their availability and behaviour are outside our control, and their own terms apply to the parts of the service they provide.</p>
+
+<h2>17. Intellectual Property</h2>
 <div class="warn">
 <p>All app design, branding, logos, text and source code are the property of PSBM Labs. You may not copy, distribute or create derivative works from the app without written permission. The content you create inside the app remains yours.</p>
 </div>
 
-<h2>14. No Warranty</h2>
+<h2>18. No Warranty</h2>
 <p>DailyShield is provided "as is" and "as available" without warranties of any kind, whether express or implied, including but not limited to accuracy, reliability, uninterrupted operation or fitness for a particular purpose.</p>
 
-<h2>15. Limitation of Liability</h2>
-<p>To the maximum extent permitted by law, PSBM Labs shall not be liable for any indirect, incidental, special or consequential damages arising from your use of, or inability to use, the app. This includes financial loss from inaccurate scanned data, loss of locally stored records, any missed water reminder or notification due to device settings or OS restrictions, and any missed call, notification or obligation caused by the Auto Silent feature.</p>
+<h2>19. Limitation of Liability</h2>
+<p>To the maximum extent permitted by law, PSBM Labs shall not be liable for any indirect, incidental, special or consequential damages arising from your use of, or inability to use, the app. This includes financial loss from inaccurate scanned data, loss of locally stored records or vault files, any missed water, medicine or prayer reminder or notification due to device settings or OS restrictions, any failed or delayed emergency call, message or location share, any missed fake call, and any missed call, notification or obligation caused by the Auto Silent feature.</p>
 
-<h2>16. Changes to the App or Terms</h2>
+<h2>20. Changes to the App or Terms</h2>
 <p>We may add, change or discontinue features at any time, and we may revise these Terms periodically. The revised version will be published on this page with a new "Last updated" date, and continued use of the app after that means you accept the updated Terms.</p>
 
-<h2>17. Termination</h2>
+<h2>21. Termination</h2>
 <p>We reserve the right to suspend or terminate your access to the app if you violate these Terms or misuse the service. You may end this agreement at any time by uninstalling the app.</p>
 
-<h2>18. Governing Law</h2>
+<h2>22. Governing Law</h2>
 <p>These Terms are governed by the applicable laws of Bangladesh, without regard to conflict-of-law principles, unless the consumer protection regulations of your own jurisdiction require otherwise.</p>
 
-<h2>19. Contact Us</h2>
+<h2>23. Contact Us</h2>
 <div class="note">
 <p>If you have questions about these Terms and Conditions, contact us at:<br><strong>psbmlabs@gmail.com</strong></p>
 </div>
