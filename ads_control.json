@@ -1,5 +1,5 @@
 {
-  "isTestMode": true,
+  "isTestMode": false,
   "adsEnabled": true,
   "bannerEnabled": true,
   "interstitialEnabled": true,
