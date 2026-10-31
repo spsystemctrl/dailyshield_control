@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -105,6 +105,144 @@
   }
 
   if (!/^[A-Za-z0-9]{20,64}$/.test(t)) { document.body.classList.add('ended'); return; }
+  poll(); timer = setInterval(poll, 5000);
+})();
+</script>
+</body>
+</html> -->
+
+
+
+
+
+<!-- For Original Google Map -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="origin">
+<meta name="robots" content="noindex, nofollow">
+<title>DailyShield – Live Location</title>
+<style>
+  :root{
+    --bg:#f6f8fb; --card:#ffffff; --text:#12202e; --muted:#4a5a6a; --primary:#E53935; --border:#e2e8f0; --ok:#1BA84A;
+    box-sizing:border-box;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --bg:#0e1621; --card:#152233; --text:#e8eef6; --muted:#a8b8c8; --primary:#ff6b66; --border:#24374f; --ok:#2ECC71; }
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;display:flex;flex-direction:column;
+       padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  header{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--card);display:flex;align-items:center;gap:10px}
+  header .dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}
+  header.live .dot{background:var(--ok);box-shadow:0 0 0 4px rgba(27,168,74,.2)}
+  header h1{font-size:16px;margin:0;font-weight:800;flex:1}
+  #map{flex:1;min-height:260px;background:var(--border)}
+  .panel{padding:14px 16px 18px;background:var(--card);border-top:1px solid var(--border)}
+  .row{display:flex;justify-content:space-between;gap:10px;font-size:14px;margin:0 0 6px;color:var(--muted)}
+  .row b{color:var(--text);font-weight:600}
+  .btn{display:block;text-align:center;margin-top:10px;background:var(--primary);color:#fff;text-decoration:none;font-weight:700;padding:12px;border-radius:12px;font-size:15px}
+  .note{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.5}
+  .mapfail{display:none;padding:14px 16px;font-size:13px;color:var(--muted);background:var(--card);border-bottom:1px solid var(--border)}
+  .msg{flex:1;display:none;align-items:center;justify-content:center;text-align:center;padding:30px;font-size:16px;line-height:1.6;color:var(--muted)}
+  .msg b{display:block;color:var(--text);font-size:20px;margin-bottom:8px}
+  body.ended #map,body.ended .panel{display:none}
+  body.ended .msg{display:flex}
+</style>
+</head>
+<body>
+<header id="hd"><span class="dot"></span><h1 id="title">Live location</h1></header>
+<div class="mapfail" id="mapfail">The map could not be loaded. You can still open the position in Google Maps with the button below.</div>
+<div id="map"></div>
+<div class="msg" id="msg"><div><b>This link has ended</b>The live location link has expired, was stopped, or is not valid.</div></div>
+<div class="panel" id="panel">
+  <p class="row"><span>Last update</span><b id="upd">–</b></p>
+  <p class="row"><span>Accuracy</span><b id="acc">–</b></p>
+  <p class="row"><span>Link valid until</span><b id="exp">–</b></p>
+  <a class="btn" id="gmaps" href="#" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
+  <p class="note">Shared by a DailyShield user. This is a temporary link: it stops working when the sharing time ends and only the latest position is kept.</p>
+</div>
+
+<script>
+(function(){
+  // >>> EDIT: same URL as dbUrl in the app
+  var DB = 'https://dailyshield---bg-live-location-default-rtdb.asia-southeast1.firebasedatabase.app/';
+  // <<<
+  var t = new URLSearchParams(location.search).get('t') || '';
+  var url = DB + '/live/' + encodeURIComponent(t) + '.json';
+  var map, marker, circle, first = true, timer = null, mapReady = false, latest = null;
+  var $ = function(id){ return document.getElementById(id); };
+
+  function ended(){
+    document.body.classList.add('ended');
+    $('hd').classList.remove('live');
+    $('title').textContent = 'Live location ended';
+    if (timer) clearInterval(timer);
+    // Expired data is unreadable, so clean it up (the database only allows this when it has expired).
+    if (/^[A-Za-z0-9]{20,64}$/.test(t)) { fetch(url, {method:'DELETE'}).catch(function(){}); }
+  }
+  function ago(ms){
+    var s = Math.max(0, Math.round((Date.now() - ms)/1000));
+    if (s < 60) return s + ' sec ago';
+    var m = Math.round(s/60); if (m < 60) return m + ' min ago';
+    return Math.round(m/60) + ' hr ago';
+  }
+  function fmt(ms){ return new Date(ms).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }
+
+  function drawMap(d){
+    var ll = {lat: d.lat, lng: d.lng};
+    if (!map){
+      map = new google.maps.Map($('map'), {center: ll, zoom: 16, mapTypeControl: false, streetViewControl: false, fullscreenControl: false});
+      circle = new google.maps.Circle({map: map, center: ll, radius: d.acc || 30, strokeColor: '#E53935', strokeWeight: 1, strokeOpacity: .6, fillColor: '#E53935', fillOpacity: .1});
+      marker = new google.maps.Marker({map: map, position: ll, icon: {path: google.maps.SymbolPath.CIRCLE, scale: 9, fillColor: '#E53935', fillOpacity: 1, strokeColor: '#ffffff', strokeWeight: 3}});
+    } else {
+      marker.setPosition(ll); circle.setCenter(ll); circle.setRadius(d.acc || 30);
+      map.panTo(ll);
+    }
+  }
+
+  function render(d){
+    if (!d || typeof d.lat !== 'number' || typeof d.lng !== 'number') return ended();
+    if (d.expiresAt && Date.now() > d.expiresAt) return ended();
+    $('hd').classList.add('live');
+    $('title').textContent = 'Live location';
+    $('upd').textContent = d.ts ? ago(d.ts) : '–';
+    $('acc').textContent = d.acc ? '~' + d.acc + ' m' : '–';
+    $('exp').textContent = d.expiresAt ? fmt(d.expiresAt) : '–';
+    $('gmaps').href = 'https://www.google.com/maps/search/?api=1&query=' + d.lat + ',' + d.lng;
+    latest = d;
+    if (mapReady) drawMap(d);
+  }
+
+  // Called by the Google Maps script when it has loaded
+  window.initMap = function(){ mapReady = true; if (latest) drawMap(latest); };
+  // Called by Google Maps if the key is rejected (wrong key / referrer not allowed / API not enabled)
+  window.gm_authFailure = function(){ $('mapfail').style.display = 'block'; $('map').style.display = 'none'; };
+
+  function poll(){
+    fetch(url, {cache:'no-store'}).then(function(r){
+      if (!r.ok) return ended();
+      return r.json().then(render);
+    }).catch(function(){ /* network hiccup: keep last position */ });
+  }
+
+  if (!/^[A-Za-z0-9]{20,64}$/.test(t)) { document.body.classList.add('ended'); return; }
+
+  // >>> EDIT: your Google Maps JavaScript API key (restrict it to your website, see instructions)
+  var MAPS_KEY = 'YOUR_GOOGLE_MAPS_KEY';
+  // <<<
+  var sc = document.createElement('script');
+  sc.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(MAPS_KEY) + '&callback=initMap&loading=async';
+  sc.async = true;
+  sc.onerror = function(){ window.gm_authFailure(); };
+  document.head.appendChild(sc);
+
   poll(); timer = setInterval(poll, 5000);
 })();
 </script>
