@@ -9,6 +9,7 @@
   :root{
     --bg:#f6f8fb; --card:#ffffff; --text:#12202e; --muted:#4a5a6a;
     --primary:#1BA84A; --accent:#1B3D6D; --border:#e2e8f0; --soft:#f0f5f1;
+    --warnbg:#fff7e6; --warnline:#FFA500;
     box-sizing:border-box;
     padding-top:env(safe-area-inset-top,0px);
     padding-bottom:env(safe-area-inset-bottom,0px);
@@ -17,6 +18,7 @@
     :root:not([data-theme="light"]){
       --bg:#0e1621; --card:#152233; --text:#e8eef6; --muted:#a8b8c8;
       --primary:#2ECC71; --accent:#5FA8FF; --border:#24374f; --soft:#18293c;
+      --warnbg:#2a2113; --warnline:#FFC542;
     }
   }
   *{box-sizing:border-box}
@@ -35,10 +37,10 @@
   strong{color:var(--text); font-weight:600}
   em{color:var(--muted); font-size:13px}
   a{color:var(--accent); text-decoration:underline; word-break:break-word}
-  .badge{display:inline-block; background:var(--soft); border:1px solid var(--border);
-         color:var(--muted); font-size:12.5px; padding:4px 10px; border-radius:999px; margin-bottom:10px}
   .note{background:var(--soft); border-left:4px solid var(--primary); border-radius:10px; padding:12px 14px; margin:0 0 14px}
-  .note p{margin:0}
+  .warn{background:var(--warnbg); border-left:4px solid var(--warnline); border-radius:10px; padding:12px 14px; margin:0 0 14px}
+  .note p,.warn p{margin:0 0 8px}
+  .note p:last-child,.warn p:last-child{margin:0}
   footer{text-align:center; color:var(--muted); font-size:13px; margin-top:22px}
 </style>
 </head>
@@ -47,14 +49,14 @@
 <div class="card">
 
 <h1>DailyShield – Privacy Policy</h1>
-<p><em>Last updated: October 5, 2026</em></p>
+<p><em>Last updated: October 31, 2026</em></p>
 
 <h2>1. Introduction</h2>
-<p>DailyShield ("we", "our", or "the app") is developed by PSBM Labs. We built DailyShield as an offline-first privacy, safety and productivity toolkit, and we designed it so that your personal data stays on your own device. This Privacy Policy explains what the app accesses, what it stores, what it never collects, and the choices available to you. By installing or using DailyShield, you agree to the practices described here.</p>
+<p>DailyShield ("we", "our", or "the app") is developed by PSBM Labs. We built DailyShield as an offline-first privacy, safety and productivity toolkit, and we designed it so that your personal data stays on your own device. The only exception is the optional Live Location Sharing feature in Emergency Contacts, which sends your location to a secure cloud service only after you start it yourself, as explained below. This Privacy Policy explains what the app accesses, what it stores, what it never collects, and the choices available to you. By installing or using DailyShield, you agree to the practices described here.</p>
 
 <h2>2. Our Core Privacy Principle</h2>
 <div class="note">
-<p>DailyShield does not require an account, a login, or a sign-up. We do not operate a server that stores your personal content. Every item you create inside the app — receipts, expenses, notes, password reminders, water, medicine and prayer reminders, emergency contacts, vault files, intruder photos, fake call settings and auto-silent zones — is saved only in the app's private local storage (a Hive database and encrypted files) on your device. We cannot see it, and it is never uploaded to us.</p>
+<p>DailyShield does not require an account, a login, or a sign-up. We do not operate a server that stores your personal content. Every item you create inside the app — receipts, expenses, notes, password reminders, water, medicine and prayer reminders, emergency contacts, vault files, intruder photos, fake call settings and auto-silent zones — is saved only in the app's private local storage (a Hive database and encrypted files) on your device. We cannot see it, and it is never uploaded to us. <strong>The only exception is Live Location Sharing:</strong> if, and only if, you tap Start Live Sharing and choose how long it should last, your live location is uploaded temporarily to a secure cloud service so that the people you send the link to can follow you. It is deleted when the sharing ends or expires.</p>
 </div>
 
 <h2>3. Information Processed by Each Module</h2>
@@ -66,7 +68,12 @@
   <li><strong>Water Reminder</strong> – This module helps you stay hydrated by sending periodic notifications during your chosen active window. Your reminder settings (start time, end time, interval, daily goal and glass size) are saved locally on your device only. The app logs only the number of glasses you log each day; no personal health or medical data is collected, processed or shared. Reminders use on-device scheduling — no location or personal data is sent to any server.</li>
   <li><strong>Medicine Reminder</strong> – This module stores the medicine name, dosage, an optional purpose note, your reminder times and a record of the doses you mark as taken. This information is saved only on your device, is used only to schedule on-device notifications and to show your own history, and is never uploaded, shared or sold. We do not collect or analyse health information.</li>
   <li><strong>Prayer Reminder</strong> – This module stores the religion or tradition you choose in the app, the prayer name, the reminder time and duration you set, and an optional place label that you type yourself (for example "Home"). Prayer times are not calculated or fetched from any server, they are the times you enter, and no GPS location is used by this module. Everything stays on your device.</li>
-  <li><strong>Emergency Contacts</strong> – You can save up to five contacts (name, phone number and relationship) on your device. When you tap Call, SMS or WhatsApp, the app opens your phone dialer or the selected app with a pre-filled help message; DailyShield does not place calls or send messages by itself. When you tap Share My Location, the app reads your current precise location once, builds a Google Maps link and hands it to the sharing app you choose. That location is not sent to our servers, is not stored by us and is never tracked in the background. To show the right emergency numbers for your country, the app may use your device language and region or, if you allow location access, your approximate position to work out your country. This lookup uses Android's built-in geocoding service, which may be provided by Google Play services, and we do not receive the result. A rewarded ad may be shown before you share your location.</li>
+  <li><strong>Emergency Contacts</strong> – You can save up to five contacts (name, phone number and relationship) on your device. When you tap Call, SMS or WhatsApp, the app opens your phone dialer or the selected app with a pre-filled help message; DailyShield does not place calls or send messages by itself. The app offers two ways to share your location:
+    <ul>
+      <li><strong>One-time share</strong> – When you tap Share My Location, the app reads your current precise location once, builds a Google Maps link and hands it to the sharing app you choose. That location is not sent to our servers, is not stored by us and is never tracked in the background.</li>
+      <li><strong>Live Location Sharing (optional)</strong> – Live sharing starts only after you tap Start Live Sharing, choose how long the link stays valid (for example 15 minutes, 1 hour, 4 hours or up to 8 hours) and confirm the in-app disclosure. While it is active, the app repeatedly collects your precise location, including in the background when the app is closed or not in use, and uploads it together with a random link ID to a secure cloud database (Google Firebase). The people who receive your link can then see your position on a map. We do not ask for your name or account, and the link ID is a random value that is not connected to your identity. A persistent notification with a Stop button is shown for as long as sharing is active. Sharing ends when you tap Stop or when the validity period you chose ends, whichever comes first. After that the link stops working and the stored live location data is deleted from our cloud service, at the latest within 24 hours. Anyone who has the link can see your location while it is active, so share it only with people you trust.</li>
+    </ul>
+    To show the right emergency numbers for your country, the app may use your device language and region or, if you allow location access, your approximate position to work out your country. This lookup uses Android's built-in geocoding service, which may be provided by Google Play services, and we do not receive the result. A rewarded ad may be shown before you share your location.</li>
   <li><strong>Shield Guard – Link Scanner</strong> – A link you type or paste is analysed on your device with built-in rules (for example look-alike names, suspicious extensions or shortened links). The app does not send the link to us or to any third party for this check.</li>
   <li><strong>Shield Guard – Secure Vault</strong> – Photos, videos, documents and notes that you add are encrypted on your device with AES-GCM encryption and kept in the app's private folder. The encryption key is held in your device's secure storage and your vault PIN is stored only as a salted hash. Optional fingerprint or face unlock is handled entirely by the Android system biometric prompt; DailyShield never receives or stores your biometric data. Vault content leaves your device only if you choose to export or share it.</li>
   <li><strong>Shield Guard – Fake Call and Fake Alarm</strong> – The caller name and number you type are saved on your device. When you start a fake call or alarm, the app schedules a local alarm and notification with the Android alarm service and plays your phone's own ringtone or alarm sound. No real call or SMS is made and nothing is sent to a server.</li>
@@ -79,14 +86,15 @@
 <ul>
   <li><strong>Camera</strong> – to capture a receipt photo for scanning and, only if you turn on Intruder Alert, to take a front-camera photo after wrong PIN attempts.</li>
   <li><strong>Photos / Storage</strong> – to let you pick an existing receipt image or vault file and to save copies inside the app's own folder.</li>
-  <li><strong>Location (approximate, precise and background)</strong> – Precise or approximate location is used for the Auto Silent feature and, once and only when you tap, to share your location or detect your country in Emergency Contacts. Background location is needed only for Auto Silent, so the geofence can still switch your phone to silent when the app is closed or not in use. All location permissions are optional; if you do not use these features you can deny them and the rest of the app will continue to work.</li>
+  <li><strong>Location (approximate, precise and background)</strong> – Precise or approximate location is used for the Auto Silent feature and, once and only when you tap, to share your location once or detect your country in Emergency Contacts. Background location is used for two optional features only: Auto Silent, so the geofence can still switch your phone to silent when the app is closed or not in use, and Live Location Sharing, so your contacts can keep following you for the validity period you chose even when the app is closed or not in use. Live Location Sharing collects location only between the moment you tap Start and the moment you tap Stop or the validity period ends. All location permissions are optional; if you do not use these features you can deny them and the rest of the app will continue to work.</li>
+  <li><strong>Foreground service (location)</strong> – to keep Live Location Sharing running while the app is in the background. Android requires a visible notification for this, and the notification includes a Stop button.</li>
   <li><strong>Do Not Disturb access (Notification Policy)</strong> – to change your ringer mode to silent and restore it when you leave an Auto Silent zone.</li>
-  <li><strong>Notifications</strong> – to show the foreground service notification required by Android for geofencing and to deliver water, medicine and prayer reminders and fake call or alarm alerts.</li>
+  <li><strong>Notifications</strong> – to show the foreground service notifications required by Android for geofencing and Live Location Sharing and to deliver water, medicine and prayer reminders and fake call or alarm alerts.</li>
   <li><strong>Alarms and reminders (exact alarms)</strong> – so reminders and fake calls or alarms are delivered at the time you choose.</li>
-  <li><strong>Battery optimisation exemption</strong> – optional; it helps Android deliver reminders on time when the app is closed.</li>
+  <li><strong>Battery optimisation exemption</strong> – optional; it helps Android deliver reminders on time and keep live sharing running when the app is closed.</li>
   <li><strong>Biometric</strong> – optional fingerprint or face unlock for the Secure Vault, handled by the Android system.</li>
   <li><strong>Run at startup, Wake lock and Vibrate</strong> – so your saved silent zones and reminder schedules keep working after the device restarts and so reminders can wake the device and vibrate.</li>
-  <li><strong>Internet and Network state</strong> – to load advertisements, check connectivity and send a message if you use the Contact Us form.</li>
+  <li><strong>Internet and Network state</strong> – to load advertisements, check connectivity, upload your live location while Live Location Sharing is active, and send a message if you use the Contact Us form.</li>
 </ul>
 <p>We do not access your phone contacts, SMS messages, call logs, or microphone. DailyShield does not request permission to place calls or send SMS directly; calls and messages go through your own dialer and messaging apps only after you tap.</p>
 
@@ -103,25 +111,27 @@
 <p>This data is collected by Google, not by us, and is governed by Google's own privacy practices: <a href="https://policies.google.com/privacy">policies.google.com/privacy</a></p>
 <p>You can review or withdraw your ad personalization consent at any time using the "Manage Ad Privacy Choices" button on this screen.</p>
 <p>The app also uses Google Play In-App Review to optionally ask for a rating, and Google Fonts to load typefaces.</p>
+<p>Live Location Sharing uses Google Firebase as a cloud service provider to temporarily store and deliver your live location to the people who open your link. Firebase processes this data on our behalf only to provide the feature, and it is not used for advertising. Firebase's own privacy information is available at <a href="https://firebase.google.com/support/privacy">firebase.google.com/support/privacy</a>.</p>
 
 <h2>7. Your Consent Choices (GDPR / UK)</h2>
-<p>If you are located in the European Economic Area, the United Kingdom or Switzerland, a consent form is shown when you first open the app, in line with GDPR and UK data protection requirements. Your choice can be changed at any time from this screen.</p>
+<p>If you are located in the European Economic Area, the United Kingdom or Switzerland, a consent form is shown when you first open the app, in line with GDPR and UK data protection requirements. Your choice can be changed at any time from this screen. Live Location Sharing is based on your explicit action: it never starts without your tap and your confirmation of the in-app disclosure.</p>
 
 <h2>8. Data Retention and Deletion</h2>
 <p>Because your content is stored only on your device, you remain in full control of it. You may delete any individual receipt, expense, note, password reminder, water or medicine reminder log, prayer reminder, emergency contact, vault item, intruder photo or silent zone from inside the app. Uninstalling DailyShield removes the entire local database, all saved images, all encrypted vault files and the vault key from your device permanently. We hold no backup copy, so deleted data cannot be recovered by us or by you.</p>
+<p><strong>Live location data:</strong> it is kept on our cloud service only while a live sharing session is active. When you tap Stop, or when the validity period you chose ends, the link stops working immediately and the stored location data is deleted, at the latest within 24 hours. We do not keep a history of where you have been. If the app is uninstalled or loses internet during sharing, the session still ends automatically when its validity period expires.</p>
 
 <h2>9. Children's Privacy</h2>
 <p>DailyShield is not directed at children under 13 (or the minimum age applicable in your country) and we do not knowingly collect personal information from children. If you believe a child has provided us information through the contact form, please write to us and we will delete it.</p>
 
 <h2>10. Data Security</h2>
-<p>Your records are kept in the app's private storage area, which other applications cannot read on a non-rooted device. Vault files and intruder photos are additionally encrypted, and the vault PIN is stored only as a salted hash. We apply reasonable technical measures to protect any data passing through the app. However, no method of electronic storage or internet transmission is completely secure, and we recommend keeping a screen lock enabled on your device.</p>
+<p>Your records are kept in the app's private storage area, which other applications cannot read on a non-rooted device. Vault files and intruder photos are additionally encrypted, and the vault PIN is stored only as a salted hash. Live location data is sent over an encrypted HTTPS connection, and each live link uses a long random identifier that cannot be guessed. However, anyone who receives your link can open it while it is valid, so please share it carefully. No method of electronic storage or internet transmission is completely secure, and we recommend keeping a screen lock enabled on your device.</p>
 
 <h2>11. Your Rights</h2>
-<p>Depending on where you live, you may have the right to access, correct, delete or restrict processing of personal data held about you. Since DailyShield does not store your personal data on any server, these rights are exercised directly on your device. For data collected by our advertising partner, please use the Google link in Section 6.</p>
-<p>If you are a California resident, you may have additional rights under the California Consumer Privacy Act (CCPA), including the right to know what personal information is collected and the right to opt out of its sale or sharing for advertising purposes. DailyShield does not sell or share personal data; such requests should be directed to Google using the link in Section 6.</p>
+<p>Depending on where you live, you may have the right to access, correct, delete or restrict processing of personal data held about you. Almost all DailyShield data is stored only on your device, so these rights are exercised directly there. Live location data exists on our cloud service only temporarily and you can end it at any time by tapping Stop, which stops the link and triggers deletion. For data collected by our advertising partner, please use the Google link in Section 6. You can also write to us at the email address in Section 14.</p>
+<p>If you are a California resident, you may have additional rights under the California Consumer Privacy Act (CCPA), including the right to know what personal information is collected and the right to opt out of its sale or sharing for advertising purposes. DailyShield does not sell personal data and does not use live location for advertising; requests about advertising data should be directed to Google using the link in Section 6.</p>
 
 <h2>12. Health, Religious and Other Sensitive Information</h2>
-<p>Medicine Reminder and Prayer Reminder may involve health or religious information that you choose to enter, and the Secure Vault and Intruder Alert may hold private files and photos. This information stays on your device. We do not collect, transfer, share or sell it, and we do not use it for advertising or profiling. Please enter only what you are comfortable keeping on your device.</p>
+<p>Medicine Reminder and Prayer Reminder may involve health or religious information that you choose to enter, and the Secure Vault and Intruder Alert may hold private files and photos. This information stays on your device. Live location is also sensitive information, and it leaves your device only during a live sharing session that you start. We do not sell or transfer any of this information, and we do not use it for advertising or profiling. Please enter only what you are comfortable keeping on your device.</p>
 
 <h2>13. Changes to This Policy</h2>
 <p>We may update this Privacy Policy as the app evolves. Any change will be published on this page with a new "Last updated" date. Continued use of the app after an update means you accept the revised policy.</p>
