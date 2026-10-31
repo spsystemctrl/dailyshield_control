@@ -44,14 +44,14 @@
   <p class="row"><span>Accuracy</span><b id="acc">–</b></p>
   <p class="row"><span>Link valid until</span><b id="exp">–</b></p>
   <a class="btn" id="gmaps" href="#" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
-  <p class="note">Shared by a DailyShield user. This is a temporary link: it stops working when the sharing time ends and only the latest position is kept.</p>
+  <p class="note">This page updates the position by itself every few seconds. The button opens the latest position in Google Maps; to see a newer position there, come back to this page and tap it again. Shared by a DailyShield user. This is a temporary link: it stops working when the sharing time ends and only the latest position is kept.</p>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 (function(){
-  // >>> EDIT: same URL as dbUrl in the app
-  var DB = 'https://dailyshield---bg-live-location-default-rtdb.asia-southeast1.firebasedatabase.app/';
+  // >>> Same URL as dbUrl in the app (a trailing "/" is removed automatically)
+  var DB = 'https://dailyshield---bg-live-location-default-rtdb.asia-southeast1.firebasedatabase.app'.replace(/\/+$/, '');
   // <<<
   var t = new URLSearchParams(location.search).get('t') || '';
   var url = DB + '/live/' + encodeURIComponent(t) + '.json';
@@ -87,13 +87,13 @@
       circle = L.circle(ll, {radius:d.acc||30, color:'#E53935', weight:1, fillOpacity:.1}).addTo(map);
     } else {
       marker.setLatLng(ll); circle.setLatLng(ll); circle.setRadius(d.acc||30);
-      if (first) map.setView(ll);
-      else map.panTo(ll);
+      map.panTo(ll);
     }
     first = false;
     $('upd').textContent = d.ts ? ago(d.ts) : '–';
     $('acc').textContent = d.acc ? '~' + d.acc + ' m' : '–';
     $('exp').textContent = d.expiresAt ? fmt(d.expiresAt) : '–';
+    // Always points to the newest position, so each tap opens the latest pin in Google Maps
     $('gmaps').href = 'https://www.google.com/maps/search/?api=1&query=' + d.lat + ',' + d.lng;
   }
 
