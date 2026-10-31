@@ -50,21 +50,9 @@
 
 <script>
 (function(){
-  // ===================== SETTINGS (edit only this block) =====================
-  // Which map to show:  'osm'    = OpenStreetMap (free, no key needed)
-  //                     'google' = real Google Map (needs MAPS_KEY below)
-  var MAP_PROVIDER = 'osm';
-
-  // Google Maps JavaScript API key. Keep it EMPTY while using 'osm'.
-  // A browser key can never be fully secret, so restrict it in Google Cloud:
-  // website = https://spsystemctrl.github.io/*  +  API = Maps JavaScript API only  +  budget alert + daily quota.
+  var DB = 'https://psbm-labs-apps-default-rtdb.asia-southeast1.firebasedatabase.app'.replace(/\/+$/, '');
   var MAPS_KEY = '';
 
-  // Same URL as dbUrl in the app (a trailing "/" is removed automatically)
-  var DB = 'https://psbm-labs-apps-default-rtdb.asia-southeast1.firebasedatabase.app'.replace(/\/+$/, '');
-  // ===========================================================================
-
-  var useGoogle = (MAP_PROVIDER === 'google' && MAPS_KEY);
   var t = new URLSearchParams(location.search).get('t') || '';
   var url = DB + '/live/' + encodeURIComponent(t) + '.json';
   var timer = null, mapReady = false, latest = null, impl = null;
@@ -115,7 +103,7 @@
 
   // ---------------- Google Maps ----------------
   function initGoogle(){
-    $('gmaps').style.display = 'none'; // button only appears if the map fails
+    $('gmaps').style.display = 'none'; 
     window.gm_authFailure = mapFailed;
     window.initMap = function(){
       var map, marker, circle;
@@ -159,8 +147,16 @@
   }
 
   if (!/^[A-Za-z0-9]{20,64}$/.test(t)) { document.body.classList.add('ended'); return; }
-  if (useGoogle) initGoogle(); else initOsm();
+  // Map choice and Google key are read from Firebase: /config/mapProvider and /config/mapsKey
   poll(); timer = setInterval(poll, 5000);
+  fetch(DB + '/config.json', {cache:'no-store'})
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .catch(function(){ return null; })
+    .then(function(c){
+      c = c || {};
+      if (c.mapProvider === 'google' && typeof c.mapsKey === 'string' && c.mapsKey) { MAPS_KEY = c.mapsKey; initGoogle(); }
+      else initOsm();
+    });
 })();
 </script>
 </body>
