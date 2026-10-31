@@ -81,6 +81,7 @@
 
   // ---------------- OpenStreetMap (Leaflet) ----------------
   function initOsm(){
+    $('gmaps').style.display = 'block';
     var l = document.createElement('link'); l.rel = 'stylesheet';
     l.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'; document.head.appendChild(l);
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js', function(){
@@ -101,10 +102,18 @@
     $('note').textContent = 'This page updates the position by itself every few seconds. The button opens the latest position in Google Maps; to see a newer position there, come back to this page and tap it again. Shared by a DailyShield user. This is a temporary link: it stops working when the sharing time ends and only the latest position is kept.';
   }
 
+  // If Google rejects the key (or fails to load), show the free OpenStreetMap map instead of a blank page.
+  function useOsmInstead(){
+    console.warn('Google Maps rejected the key or could not load; showing OpenStreetMap instead.');
+    $('map').innerHTML = ''; $('map').removeAttribute('style');
+    mapReady = false; impl = null;
+    initOsm();
+  }
+
   // ---------------- Google Maps ----------------
   function initGoogle(){
-    $('gmaps').style.display = 'none'; 
-    window.gm_authFailure = mapFailed;
+    $('gmaps').style.display = 'none'; // button only appears if the map fails
+    window.gm_authFailure = useOsmInstead;
     window.initMap = function(){
       var map, marker, circle;
       impl = function(d){
@@ -122,7 +131,7 @@
       };
       mapReady = true; if (latest) impl(latest);
     };
-    loadScript('https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(MAPS_KEY) + '&callback=initMap&loading=async', null, mapFailed);
+    loadScript('https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(MAPS_KEY) + '&callback=initMap&loading=async', null, useOsmInstead);
     $('note').textContent = 'This page updates the position by itself every few seconds. Tap the red dot to open this position in the Google Maps app. Shared by a DailyShield user. This is a temporary link: it stops working when the sharing time ends and only the latest position is kept.';
   }
 
@@ -154,8 +163,12 @@
     .catch(function(){ return null; })
     .then(function(c){
       c = c || {};
-      if (c.mapProvider === 'google' && typeof c.mapsKey === 'string' && c.mapsKey) { MAPS_KEY = c.mapsKey; initGoogle(); }
-      else initOsm();
+      var k = typeof c.mapsKey === 'string' ? c.mapsKey.trim() : '';
+      if (c.mapProvider === 'google' && /^AIza[0-9A-Za-z_-]{35}$/.test(k)) { MAPS_KEY = k; initGoogle(); }
+      else {
+        if (c.mapProvider === 'google') console.warn('mapsKey in Firebase does not look like a Google API key (should start with AIza and be 39 characters). Using OpenStreetMap.');
+        initOsm();
+      }
     });
 })();
 </script>
