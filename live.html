@@ -51,7 +51,7 @@
 <script>
 (function(){
   // >>> Same URL as dbUrl in the app (a trailing "/" is removed automatically)
-  var DB = 'https://dailyshield---bg-live-location-default-rtdb.asia-southeast1.firebasedatabase.app'.replace(/\/+$/, '');
+  var DB = 'https://psbm-labs-apps-default-rtdb.asia-southeast1.firebasedatabase.app'.replace(/\/+$/, '');
   // <<<
   var t = new URLSearchParams(location.search).get('t') || '';
   var url = DB + '/live/' + encodeURIComponent(t) + '.json';
