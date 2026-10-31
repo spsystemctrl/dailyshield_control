@@ -49,7 +49,6 @@
 
 <script>
 (function(){
-  // >>> EDIT: same URL as dbUrl in the app
   var DB = 'https://psbm-labs-apps-default-rtdb.asia-southeast1.firebasedatabase.app'.replace(/\/+$/, '');
   // <<<
   var t = new URLSearchParams(location.search).get('t') || '';
@@ -115,16 +114,21 @@
 
   if (!/^[A-Za-z0-9]{20,64}$/.test(t)) { document.body.classList.add('ended'); return; }
 
-  // >>> EDIT: your Google Maps JavaScript API key (restrict it to your website, see instructions)
-  var MAPS_KEY = 'YOUR_GOOGLE_MAPS_KEY';
-  // <<<
-  var sc = document.createElement('script');
-  sc.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(MAPS_KEY) + '&callback=initMap&loading=async';
-  sc.async = true;
-  sc.onerror = function(){ window.gm_authFailure(); };
-  document.head.appendChild(sc);
-
+  
   poll(); timer = setInterval(poll, 5000);
+  fetch(DB + '/config.json', {cache:'no-store'})
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .catch(function(){ return null; })
+    .then(function(c){
+      c = c || {};
+      var key = typeof c.mapsKey === 'string' ? c.mapsKey : '';
+      if (!key) return window.gm_authFailure();
+      var sc = document.createElement('script');
+      sc.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key) + '&callback=initMap&loading=async';
+      sc.async = true;
+      sc.onerror = function(){ window.gm_authFailure(); };
+      document.head.appendChild(sc);
+    });
 })();
 </script>
 </body>
