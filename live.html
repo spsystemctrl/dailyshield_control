@@ -22,7 +22,9 @@
   header .dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}
   header.live .dot{background:var(--ok);box-shadow:0 0 0 4px rgba(27,168,74,.2)}
   header h1{font-size:16px;margin:0;font-weight:800;flex:1}
+  #mapwrap{position:relative;flex:1;display:flex;min-height:260px;background:var(--border)}
   #map{flex:1;min-height:260px;background:var(--border)}
+  #recenter{position:absolute;right:12px;bottom:12px;z-index:1000;display:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--card);color:var(--text);font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer}
   .panel{padding:14px 16px 18px;background:var(--card);border-top:1px solid var(--border)}
   .row{display:flex;justify-content:space-between;gap:10px;font-size:14px;margin:0 0 6px;color:var(--muted)}
   .row b{color:var(--text);font-weight:600}
@@ -31,14 +33,14 @@
   .mapfail{display:none;padding:14px 16px;font-size:13px;color:var(--muted);background:var(--card);border-bottom:1px solid var(--border)}
   .msg{flex:1;display:none;align-items:center;justify-content:center;text-align:center;padding:30px;font-size:16px;line-height:1.6;color:var(--muted)}
   .msg b{display:block;color:var(--text);font-size:20px;margin-bottom:8px}
-  body.ended #map,body.ended .panel,body.ended .mapfail{display:none}
+  body.ended #mapwrap,body.ended .panel,body.ended .mapfail{display:none}
   body.ended .msg{display:flex}
 </style>
 </head>
 <body>
 <header id="hd"><span class="dot"></span><h1 id="title">Live location</h1></header>
 <div class="mapfail" id="mapfail">The map could not be loaded. Use the button below to open the position in Google Maps.</div>
-<div id="map"></div>
+<div id="mapwrap"><div id="map"></div><button id="recenter" title="Follow">📍</button></div>
 <div class="msg" id="msg"><div><b>This link has ended</b>The live location link has expired, was stopped, or is not valid.</div></div>
 <div class="panel" id="panel">
   <p class="row"><span>Last update</span><b id="upd">–</b></p>
@@ -52,17 +54,21 @@
 (function(){
   var DB = 'https://psbm-labs-apps-default-rtdb.asia-southeast1.firebasedatabase.app'.replace(/\/+$/, '');
   var MAPS_KEY = '';
+  var GLIDE = 3000; // ms. Keep close to the app upload interval (3 s) so the dot never stops.
 
   var t = new URLSearchParams(location.search).get('t') || '';
   var url = DB + '/live/' + encodeURIComponent(t) + '.json';
-  var timer = null, mapReady = false, latest = null, impl = null;
+  var timer = null, tick = null, es = null, cur = null;
+  var mapReady = false, latest = null, impl = null;
   var $ = function(id){ return document.getElementById(id); };
 
   function ended(){
     document.body.classList.add('ended');
     $('hd').classList.remove('live');
     $('title').textContent = 'Live location ended';
-    if (timer) clearInterval(timer);
+    if (timer) { clearInterval(timer); timer = null; }
+    if (tick) { clearInterval(tick); tick = null; }
+    if (es) { es.close(); es = null; }
     // Expired data is unreadable, so clean it up (the database only allows this when it has expired).
     if (/^[A-Za-z0-9]{20,64}$/.test(t)) { fetch(url, {method:'DELETE'}).catch(function(){}); }
   }
@@ -77,7 +83,36 @@
     var s = document.createElement('script'); s.src = src; s.async = true;
     s.onload = ok; s.onerror = fail || function(){}; document.head.appendChild(s);
   }
-  function mapFailed(){ $('mapfail').style.display = 'block'; $('map').style.display = 'none'; $('gmaps').style.display = 'block'; }
+  function mapFailed(){ $('mapfail').style.display = 'block'; $('mapwrap').style.display = 'none'; $('gmaps').style.display = 'block'; }
+
+  // ---------------- Smooth movement (shared by both map types) ----------------
+  // adapter: create(to, acc, onDrag), move(pos, follow), radius(acc), center(pos)
+  function makeTracker(a){
+    var inited = false, shown = null, raf = 0, follow = true, rc = $('recenter');
+    rc.style.display = 'none';
+    rc.onclick = function(){ follow = true; rc.style.display = 'none'; if (shown) a.center(shown); };
+    return function(d){
+      var to = {lat: d.lat, lng: d.lng}, acc = d.acc || 30;
+      if (!inited){
+        a.create(to, acc, function(){ follow = false; rc.style.display = 'block'; });
+        shown = to; inited = true; return;
+      }
+      a.radius(acc);
+      var from = {lat: shown.lat, lng: shown.lng};
+      cancelAnimationFrame(raf);
+      // Very large jump (more than ~500 m): move straight there instead of sliding.
+      if (Math.abs(to.lat - from.lat) > 0.005 || Math.abs(to.lng - from.lng) > 0.005){
+        shown = to; a.move(shown, follow); return;
+      }
+      var t0 = performance.now();
+      (function step(){
+        var k = Math.min(1, Math.max(0, (performance.now() - t0) / GLIDE));
+        shown = {lat: from.lat + (to.lat - from.lat) * k, lng: from.lng + (to.lng - from.lng) * k};
+        a.move(shown, follow);
+        if (k < 1) raf = requestAnimationFrame(step);
+      })();
+    };
+  }
 
   // ---------------- OpenStreetMap (Leaflet) ----------------
   function initOsm(){
@@ -86,20 +121,26 @@
     l.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'; document.head.appendChild(l);
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js', function(){
       var map, marker, circle;
-      impl = function(d){
-        var ll = [d.lat, d.lng];
-        if (!map){
+      impl = makeTracker({
+        create: function(to, acc, onDrag){
+          var ll = [to.lat, to.lng];
           map = L.map('map', {zoomControl:true}).setView(ll, 16);
           L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
           marker = L.circleMarker(ll, {radius:9, color:'#fff', weight:3, fillColor:'#E53935', fillOpacity:1}).addTo(map);
-          circle = L.circle(ll, {radius:d.acc||30, color:'#E53935', weight:1, fillOpacity:.1}).addTo(map);
-        } else {
-          marker.setLatLng(ll); circle.setLatLng(ll); circle.setRadius(d.acc||30); map.panTo(ll);
-        }
-      };
+          circle = L.circle(ll, {radius:acc, color:'#E53935', weight:1, fillOpacity:.1}).addTo(map);
+          map.on('dragstart', onDrag);
+        },
+        move: function(p, follow){
+          var ll = [p.lat, p.lng];
+          marker.setLatLng(ll); circle.setLatLng(ll);
+          if (follow) map.setView(ll, map.getZoom(), {animate:false});
+        },
+        radius: function(acc){ circle.setRadius(acc); },
+        center: function(p){ map.setView([p.lat, p.lng], map.getZoom(), {animate:true}); }
+      });
       mapReady = true; if (latest) impl(latest);
     }, mapFailed);
-    $('note').textContent = 'This page updates the position by itself every few seconds. The button opens the latest position in Google Maps; to see a newer position there, come back to this page and tap it again. Shared by a DailyShield user. This is a temporary link: it stops working when the sharing time ends and only the latest position is kept.';
+    $('note').textContent = 'This page updates the position live. The button opens the latest position in Google Maps; to see a newer position there, come back to this page and tap it again. Shared by a DailyShield user. This is a temporary link: it stops working when the sharing time ends and only the latest position is kept.';
   }
 
   // If Google rejects the key (or fails to load), show the free OpenStreetMap map instead of a blank page.
@@ -116,23 +157,27 @@
     window.gm_authFailure = useOsmInstead;
     window.initMap = function(){
       var map, marker, circle;
-      impl = function(d){
-        var ll = {lat: d.lat, lng: d.lng};
-        if (!map){
-          map = new google.maps.Map($('map'), {center: ll, zoom: 16, mapTypeControl: false, streetViewControl: false, fullscreenControl: false});
-          circle = new google.maps.Circle({map: map, center: ll, radius: d.acc || 30, strokeColor: '#E53935', strokeWeight: 1, strokeOpacity: .6, fillColor: '#E53935', fillOpacity: .1});
-          marker = new google.maps.Marker({map: map, position: ll, icon: {path: google.maps.SymbolPath.CIRCLE, scale: 9, fillColor: '#E53935', fillOpacity: 1, strokeColor: '#ffffff', strokeWeight: 3}});
+      impl = makeTracker({
+        create: function(to, acc, onDrag){
+          map = new google.maps.Map($('map'), {center: to, zoom: 16, mapTypeControl:false, streetViewControl:false, fullscreenControl:false});
+          circle = new google.maps.Circle({map: map, center: to, radius: acc, strokeColor:'#E53935', strokeWeight:1, strokeOpacity:.6, fillColor:'#E53935', fillOpacity:.1});
+          marker = new google.maps.Marker({map: map, position: to, icon:{path: google.maps.SymbolPath.CIRCLE, scale:9, fillColor:'#E53935', fillOpacity:1, strokeColor:'#ffffff', strokeWeight:3}});
           marker.addListener('click', function(){
             if (latest) window.open('https://www.google.com/maps/search/?api=1&query=' + latest.lat + ',' + latest.lng, '_blank', 'noopener');
           });
-        } else {
-          marker.setPosition(ll); circle.setCenter(ll); circle.setRadius(d.acc || 30); map.panTo(ll);
-        }
-      };
+          map.addListener('dragstart', onDrag);
+        },
+        move: function(p, follow){
+          marker.setPosition(p); circle.setCenter(p);
+          if (follow) map.setCenter(p);
+        },
+        radius: function(acc){ circle.setRadius(acc); },
+        center: function(p){ map.panTo(p); }
+      });
       mapReady = true; if (latest) impl(latest);
     };
     loadScript('https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(MAPS_KEY) + '&callback=initMap&loading=async', null, useOsmInstead);
-    $('note').textContent = 'This page updates the position by itself every few seconds. Tap the red dot to open this position in the Google Maps app. Shared by a DailyShield user. This is a temporary link: it stops working when the sharing time ends and only the latest position is kept.';
+    $('note').textContent = 'This page updates the position live. Tap the red dot to open this position in the Google Maps app. Shared by a DailyShield user. This is a temporary link: it stops working when the sharing time ends and only the latest position is kept.';
   }
 
   function render(d){
@@ -148,16 +193,51 @@
     if (mapReady && impl) impl(d);
   }
 
+  // ---------------- Data: live stream (SSE) with polling fallback ----------------
   function poll(){
     fetch(url, {cache:'no-store'}).then(function(r){
       if (!r.ok) return ended();
       return r.json().then(render);
     }).catch(function(){ /* network hiccup: keep last position */ });
   }
+  function startPolling(){
+    if (timer) return;
+    poll(); timer = setInterval(poll, 5000);
+  }
+  function startStream(){
+    if (!window.EventSource) return startPolling();
+    es = new EventSource(url);
+    es.addEventListener('put', function(e){
+      var m; try { m = JSON.parse(e.data); } catch(_) { return; }
+      if (m.path === '/') cur = m.data;
+      else { cur = cur || {}; cur[m.path.split('/')[1]] = m.data; }
+      render(cur);
+    });
+    es.addEventListener('patch', function(e){
+      var m; try { m = JSON.parse(e.data); } catch(_) { return; }
+      cur = cur || {};
+      for (var k in m.data) cur[k] = m.data[k];
+      render(cur);
+    });
+    es.addEventListener('cancel', function(){ ended(); });
+    es.onerror = function(){
+      // Stream failed: fall back to polling every 5 s.
+      if (es) { es.close(); es = null; }
+      startPolling();
+    };
+  }
 
   if (!/^[A-Za-z0-9]{20,64}$/.test(t)) { document.body.classList.add('ended'); return; }
+
+  startStream();
+  // Streaming sends nothing when the sharer stops moving, so refresh "x sec ago" and check expiry every second.
+  tick = setInterval(function(){
+    if (!latest) return;
+    if (latest.expiresAt && Date.now() > latest.expiresAt) return ended();
+    if (latest.ts) $('upd').textContent = ago(latest.ts);
+  }, 1000);
+
   // Map choice and Google key are read from Firebase: /config/mapProvider and /config/mapsKey
-  poll(); timer = setInterval(poll, 5000);
   fetch(DB + '/config.json', {cache:'no-store'})
     .then(function(r){ return r.ok ? r.json() : null; })
     .catch(function(){ return null; })
